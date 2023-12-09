@@ -45,7 +45,7 @@ RCON = (
 base64_alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
 
 # KEY EXPANSION WORKING WITH TEST: https://www.kavaliro.com/wp-content/uploads/2014/03/AES.pdf (PAGE 3)
-"""
+
 def key_expansion(key):
     key = key.encode('utf-8')
     key_size = len(key)
@@ -64,7 +64,11 @@ def key_expansion(key):
     for i in range(Nk, 4 * (Nr + 1)):
         temp = expanded_keys[i - 1]
 
-        if i % Nk == 0:
+        if key_size == 32 and i % Nk == 4:
+            # Additional logic for 256-bit key expansion
+            temp = [S_BOX[b] for b in temp]
+
+        elif i % Nk == 0:
             # RotWord
             temp = [temp[1], temp[2], temp[3], temp[0]]
 
@@ -90,7 +94,7 @@ def print_matrix(m):
     print(" ")
 
 # Example key
-key = 'Thats my Kung Fu' 
+key = 'Thats my Kung FuThats my Kung Fu' 
 print(f"key: {key}")
 
 # Perform key expansion
@@ -99,7 +103,7 @@ expanded_keys = key_expansion(key)
 # Display the expanded keys
 print("Expanded Keys:")
 print_matrix(expanded_keys)
-"""
+
 # SUB_BYTES
 """
 def sub_bytes(state):

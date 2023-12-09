@@ -3,8 +3,8 @@ from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
 
 # Replace with your own key and plaintext
-key = b"0000000000000000"  # Provide a 128-bit (16-byte) key
-plaintext = b"0000000000000000"
+key = b"0000000000000000000000000000000"  # Provide a 256-bit (32-byte) key
+plaintext = b"00000000000000000"
 
 # Padding the plaintext
 backend = default_backend()

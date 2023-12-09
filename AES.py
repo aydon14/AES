@@ -58,7 +58,7 @@ RCON = [
 base64_alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
 
 """ Functions """
-
+"""
 def key_expansion(key):
     key_size = len(key)
     key_words = [key[i:i + 4] for i in range(0, len(key), 4)]
@@ -77,6 +77,43 @@ def key_expansion(key):
         temp = expanded_keys[i - 1]
 
         if i % Nk == 0:
+            # RotWord
+            temp = [temp[1], temp[2], temp[3], temp[0]]
+
+            # SubWord
+            for j in range(4):
+                temp[j] = S_BOX[temp[j]]
+
+            # XOR with Rcon
+            temp[0] ^= RCON[i // Nk - 1]
+
+        # XOR with previous word
+        expanded_keys.append([a ^ b for a, b in zip(expanded_keys[i - Nk], temp)])
+
+    return expanded_keys
+"""
+def key_expansion(key):
+    key_size = len(key)
+    key_words = [key[i:i + 4] for i in range(0, len(key), 4)]
+    expanded_keys = list(key_words)
+    
+    if key_size == 16:
+        Nr = 10  # 10 rounds for 128-bit key
+    elif key_size == 24:
+        Nr = 12  # 12 rounds for 192-bit key
+    elif key_size == 32:
+        Nr = 14  # 14 rounds for 256-bit key
+
+    Nk = key_size // 4
+
+    for i in range(Nk, 4 * (Nr + 1)):
+        temp = expanded_keys[i - 1]
+
+        if key_size == 32 and i % Nk == 4:
+            # Additional logic for 256-bit key expansion
+            temp = [S_BOX[b] for b in temp]
+
+        elif i % Nk == 0:
             # RotWord
             temp = [temp[1], temp[2], temp[3], temp[0]]
 
@@ -144,14 +181,6 @@ def mix_columns(state):
     return state
 
 def inv_mix_columns(state):
-    # The inverse matrix for MixColumns
-    inv_matrix = [
-        [0x0e, 0x0b, 0x0d, 0x09],
-        [0x09, 0x0e, 0x0b, 0x0d],
-        [0x0d, 0x09, 0x0e, 0x0b],
-        [0x0b, 0x0d, 0x09, 0x0e]
-    ]
-
     for i in range(4):
         s0 = state[i][0]
         s1 = state[i][1]
@@ -367,10 +396,10 @@ def aes_decrypt(ciphertext, key):
     return plaintext
 
 def encode():
-    plaintext_string = "Two One Nine Two"
+    plaintext_string = "0000000000000000"
     plaintext_bytes = plaintext_string.encode('utf-8')
     
-    key_string = "Thats my Kung Fu"
+    key_string = "00000000000000000000000000000000"
     key_bytes = key_string.encode('utf-8')
     
     ciphertext = aes_encrypt(plaintext_bytes, key_bytes)
