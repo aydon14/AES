@@ -45,7 +45,7 @@ RCON = (
 base64_alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
 
 # KEY EXPANSION WORKING WITH TEST: https://www.kavaliro.com/wp-content/uploads/2014/03/AES.pdf (PAGE 3)
-
+"""
 def key_expansion(key):
     key = key.encode('utf-8')
     key_size = len(key)
@@ -103,7 +103,7 @@ expanded_keys = key_expansion(key)
 # Display the expanded keys
 print("Expanded Keys:")
 print_matrix(expanded_keys)
-
+"""
 # SUB_BYTES
 """
 def sub_bytes(state):
