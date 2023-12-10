@@ -1,5 +1,6 @@
 - AES-testing.py - Each function tested individually
 - AES.py - Working with main function
+- AES-raw.py - AES.py with no comments.
 - test.py - 128-bit test
 - test2.py - 192-bit test
 - test3.py - 256-bit test
