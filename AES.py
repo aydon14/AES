@@ -310,6 +310,8 @@ def decrypt_block(block, key, key_size):
     return state
 
 def aes_encrypt(plaintext, key):
+    plaintext = plaintext.encode('utf-8')
+    key = key.encode('utf-8')
     # Key expansion based on the provided key size
     key_size = len(key)
     expanded_key = key_expansion(key)
@@ -334,9 +336,11 @@ def aes_encrypt(plaintext, key):
         encrypted_block = bytes(sum(state, []))
         ciphertext += encrypted_block
 
-    return ciphertext
+    return base64_encode_bytes(ciphertext)
 
 def aes_decrypt(ciphertext, key):
+    ciphertext = base64_decode_text(ciphertext)
+    key = key.encode('utf-8')
     # Key expansion based on the provided key size
     key_size = len(key)
     expanded_key = key_expansion(key)
@@ -363,20 +367,14 @@ def aes_decrypt(ciphertext, key):
     return plaintext
 
 def encode():
-    plaintext_string = "0000000000000000"
-    plaintext_bytes = plaintext_string.encode('utf-8')
+    plaintext = "0000000000000000"
+    key = "00000000000000000000000000000000"
     
-    key_string = "00000000000000000000000000000000"
-    key_bytes = key_string.encode('utf-8')
+    ciphertext = aes_encrypt(plaintext, key)
+    decrypted_plaintext = aes_decrypt(ciphertext, key)
     
-    ciphertext = aes_encrypt(plaintext_bytes, key_bytes)
-    ciphertext = base64_encode_bytes(ciphertext)
-    
-    print(f"Original string: {plaintext_string}")
-    print(f"Original bytes: {plaintext_bytes}")
+    print(f"Original string: {plaintext}")
     print(f"Encoded string: {ciphertext}")
-    ciphertext = base64_decode_text(ciphertext)
-    decrypted_plaintext = aes_decrypt(ciphertext, key_bytes)
     print(f"Decoded string: {decrypted_plaintext.decode('utf-8')}")
     
 if __name__ == "__main__":
