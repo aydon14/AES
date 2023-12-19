@@ -1,5 +1,6 @@
-ALL files have purposes. For proper use, use AES_update.py
+ALL files have purposes. For proper use, use AES_update.py .
 AES.py and AES-raw.py work but aren't recommended/optimized.
+P.S. You can delete the "encode()" function when using.
 
 - AES-testing.py - Each function tested individually
 - AES.py - Working with main function
