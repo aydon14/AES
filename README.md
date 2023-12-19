@@ -1,3 +1,6 @@
+ALL files have purposes. For proper use, use AES_update.py
+AES.py and AES-raw.py work but aren't recommended/optimized.
+
 - AES-testing.py - Each function tested individually
 - AES.py - Working with main function
 - AES-raw.py - AES.py with no comments.
