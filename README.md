@@ -4,6 +4,7 @@
 - test.py - 128-bit test
 - test2.py - 192-bit test
 - test3.py - 256-bit test
+- AES_update.py (USE ME!) - Updated file with shorter code and more optimization.
 
 All tests performed with Cryptography (https://github.com/pyca/cryptography/)
 
