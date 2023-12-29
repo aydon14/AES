@@ -1,11 +1,4 @@
-#
-# Made by Aydon Fauscett (with help from ChatGPT)
-# Sources: 
-# Update (ALL PAGES):
-# https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.197-upd1.pdf
-# Test vectors / additional testing (PAGES 27 - 46):
-# https://csrc.nist.gov/files/pubs/fips/197/final/docs/fips-197.pdf
-#
+# Made by Aydon Fauscett
 
 S_BOX = [
     0x63, 0x7C, 0x77, 0x7B, 0xF2, 0x6B, 0x6F, 0xC5, 0x30, 0x01, 0x67, 0x2B, 0xFE, 0xD7, 0xAB, 0x76,
@@ -48,8 +41,6 @@ INV_S_BOX = [
 RCON = [
     0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1b, 0x36, 0x6c, 0xd8, 0xab, 0x4d, 0x9a, 0x2f
 ]
-
-base64_alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
 
 def key_expansion(key, Nr):
     key_size = len(key)
@@ -158,52 +149,6 @@ def unpad(padded_data):
     else:
         return padded_data
 
-def base64_encode_bytes(byte_string):
-    output_text = ""
-    bits = 0
-    bits_count = 0
-
-    for byte in byte_string:
-        bits <<= 8
-        bits += byte
-        bits_count += 8
-
-        while bits_count >= 6:
-            index = (bits >> (bits_count - 6)) & 63
-            output_text += base64_alphabet[index]
-            bits_count -= 6
-            bits &= (1 << bits_count) - 1
-
-    if bits_count > 0:
-        bits <<= 6 - bits_count
-        index = bits & 63
-        output_text += base64_alphabet[index]
-
-    while len(output_text) % 4 != 0:
-        output_text += "="
-
-    return output_text
-
-def base64_decode_text(encoded_text):
-    byte_string = bytearray()
-    bits = 0
-    bits_count = 0
-
-    for char in encoded_text:
-        if char == '=':
-            break
-
-        index = base64_alphabet.index(char)
-        bits = (bits << 6) + index
-        bits_count += 6
-
-        while bits_count >= 8:
-            bits_count -= 8
-            decoded_byte = (bits >> bits_count) & 0xFF
-            byte_string.append(decoded_byte)
-
-    return bytes(byte_string)
-
 def encrypt_block(block, key, Nr):
     state = block[:]
     state = add_round_key(state, key[:4])
@@ -237,8 +182,6 @@ def decrypt_block(block, key, Nr):
     return bytes(sum(state, []))
 
 def aes_encrypt(plaintext, key):
-    plaintext = plaintext.encode('utf-8')
-    key = key.encode('utf-8')
     Nr = 0
     if len(key) == 16:
         Nr = 10
@@ -259,11 +202,9 @@ def aes_encrypt(plaintext, key):
         encrypted_block = encrypt_block(state, expanded_key, Nr)
         ciphertext += encrypted_block
 
-    return base64_encode_bytes(ciphertext)
+    return ciphertext
 
 def aes_decrypt(ciphertext, key):
-    ciphertext = base64_decode_text(ciphertext)
-    key = key.encode('utf-8')
     Nr = 0
     if len(key) == 16:
         Nr = 10
@@ -282,17 +223,17 @@ def aes_decrypt(ciphertext, key):
         plaintext += decrypted_block
 
     plaintext = unpad(plaintext)
-    return plaintext.decode('utf-8')
+    return plaintext
 
 def encode():
-    plaintext = "0000000000000000"
-    key = "0000000000000000" # 16, 24, or 32 characters
+    plaintext = b"0000000000000000"
+    key = b"0000000000000000"
     
     ciphertext = aes_encrypt(plaintext, key)
     decrypted_plaintext = aes_decrypt(ciphertext, key)
     
     print(f"Original string: {plaintext}")
-    print(f"Encoded string: {ciphertext}")
+    print(f"Encoded string: {ciphertext.hex()}")
     print(f"Decoded string: {decrypted_plaintext}")
     
 if __name__ == "__main__":

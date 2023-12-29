@@ -1,11 +1,4 @@
-#
-# Made by Aydon Fauscett (with help from ChatGPT)
-# Sources: 
-# Update (ALL PAGES):
-# https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.197-upd1.pdf
-# Test vectors / additional testing (PAGES 27 - 46):
-# https://csrc.nist.gov/files/pubs/fips/197/final/docs/fips-197.pdf
-#
+# Made by Aydon Fauscett
 
 S_BOX = [
     0x63, 0x7C, 0x77, 0x7B, 0xF2, 0x6B, 0x6F, 0xC5, 0x30, 0x01, 0x67, 0x2B, 0xFE, 0xD7, 0xAB, 0x76,
@@ -100,18 +93,6 @@ def add_round_key(state, round_key):
 
     return state
 
-def pad(data, block_size):
-    pad_len = block_size - len(data) % block_size
-    padding = bytes([pad_len]) * pad_len
-    return data + padding
-
-def unpad(padded_data):
-    pad_len = padded_data[-1]
-    if pad_len < len(padded_data):
-        return padded_data[:-pad_len]
-    else:
-        return padded_data
-
 def encrypt_block(block, key, Nr):
     state = block[:]
     state = add_round_key(state, key[:4])
@@ -129,9 +110,6 @@ def encrypt_block(block, key, Nr):
     return bytes(sum(state, []))
 
 def aes_encrypt(plaintext, key, iv):
-    plaintext_bytes = plaintext.encode('utf-8')
-    key = key.encode('utf-8')
-    iv = iv.encode('utf-8')
     Nr = 0
     if len(key) == 16:
         Nr = 10
@@ -142,25 +120,25 @@ def aes_encrypt(plaintext, key, iv):
     expanded_key = key_expansion(key, Nr)
     block_size = 16
     ciphertext = b''
-    previous_block = iv
+    block_count = len(plaintext) // block_size
 
-    for i in range(0, len(plaintext), block_size):
-        block = plaintext_bytes[i:i + block_size]
-        if len(block) < block_size:
-            block = pad(block, block_size)
-
-        state = [list(previous_block[i:i + 4]) for i in range(0, len(previous_block), 4)]
-        encrypted_block = encrypt_block(state, expanded_key, Nr)
-        ciphertext_block = bytes(a ^ b for a, b in zip(encrypted_block, block))
+    for i in range(block_count):
+        iv_state = [list(iv[i:i+4]) for i in range(0, len(iv), 4)]
+        encrypted_iv = encrypt_block(iv_state, expanded_key, Nr)
+        ciphertext_block = bytes(a ^ b for a, b in zip(plaintext[i*block_size:(i+1)*block_size], encrypted_iv))
         ciphertext += ciphertext_block
-        previous_block = ciphertext_block
+        iv = encrypted_iv
 
-    return ciphertext.hex()
+    if len(plaintext) % block_size != 0:
+        iv_state = [list(iv[i:i+4]) for i in range(0, len(iv), 4)]
+        encrypted_iv = encrypt_block(iv_state, expanded_key, Nr)
+        ciphertext_block = bytes(a ^ b for a, b in zip(plaintext[block_count*block_size:], 
+                                                       encrypted_iv[:len(plaintext) % block_size]))
+        ciphertext += ciphertext_block
+
+    return ciphertext
 
 def aes_decrypt(ciphertext, key, iv):
-    ciphertext = bytes.fromhex(ciphertext)
-    key = key.encode('utf-8')
-    iv = iv.encode('utf-8')
     Nr = 0
     if len(key) == 16:
         Nr = 10
@@ -171,29 +149,34 @@ def aes_decrypt(ciphertext, key, iv):
     expanded_key = key_expansion(key, Nr)
     block_size = 16
     plaintext = b''
-    previous_block = iv
+    block_count = len(ciphertext) // block_size
 
-    for i in range(0, len(ciphertext), block_size):
-        block = ciphertext[i:i + block_size]
-        state = [list(previous_block[i:i + 4]) for i in range(0, len(previous_block), 4)]
-        encrypted_block = encrypt_block(state, expanded_key, Nr)
-        decrypted_block = bytes(a ^ b for a, b in zip(encrypted_block, block))
+    for i in range(block_count):
+        iv_state = [list(iv[i:i+4]) for i in range(0, len(iv), 4)]
+        encrypted_iv = encrypt_block(iv_state, expanded_key, Nr)
+        decrypted_block = bytes(a ^ b for a, b in zip(ciphertext[i*block_size:(i+1)*block_size], encrypted_iv))
         plaintext += decrypted_block
-        previous_block = block
+        iv = encrypted_iv
 
-    plaintext = unpad(plaintext)
-    return plaintext.decode('utf-8')
+    if len(ciphertext) % block_size != 0:
+        iv_state = [list(iv[i:i+4]) for i in range(0, len(iv), 4)]
+        encrypted_iv = encrypt_block(iv_state, expanded_key, Nr)
+        decrypted_block = bytes(a ^ b for a, b in zip(ciphertext[block_count*block_size:], 
+                                                      encrypted_iv[:len(ciphertext) % block_size]))
+        plaintext += decrypted_block
+
+    return plaintext
 
 def encode():
-    plaintext = "0000000000000000"
-    key = "0000000000000000" # 16, 24, or 32 characters
-    iv = "1111111111111111"
+    plaintext = b"0000000000000000"
+    key = b"0000000000000000"
+    iv = b"1111111111111111"
     
     ciphertext = aes_encrypt(plaintext, key, iv)
     decrypted_plaintext = aes_decrypt(ciphertext, key, iv)
     
     print(f"Original string: {plaintext}")
-    print(f"Encoded string: {ciphertext}")
+    print(f"Encoded string: {ciphertext.hex()}")
     print(f"Decoded string: {decrypted_plaintext}")
     
 if __name__ == "__main__":
