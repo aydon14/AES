@@ -1,14 +1,18 @@
-ALL files have purposes. Testing files are labeled so. Do your own research on modes. I will provide brief discriptions in the future.
+Here's the deal. I hate modules. They are a waste of milliseconds of your time.
 
-P.S. You can delete the "encode()" function when using.
+I was unable to find any pure python implementations of AES that strictly follows NIST FIPS 197:
 
-File format: cipher-mode.
+https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.197-upd1.pdf
 
-Errors are not built in, so if your key is an invalid length for example, then you will recieve a regular python error.
+So I decided to make my own. Current updates will be posted on this repository.
 
-Files only contain byte format. Check conversions.py for hex and regular string formats. File only contains examples, not import code.
+Each file contains 128, 192, and 256 bit versions of each mode.
 
-I plan on adding all round 1 ciphers onto this repository.
+These files contain bare-bone implementations of each cipher. There are no special errors, classes, built-in conversions, etc.
+
+Each cipher takes and returns bytes. If you want base64 or hex, check conversions.py .
+
+Sticking with the no modules theme, I made my own base64 functions for you to use, also in conversions.py .
 
 --- Ciphers / Modes ---
 
@@ -20,9 +24,10 @@ I plan on adding all round 1 ciphers onto this repository.
 - Output Feedback (OFB)
 - Counter (CTR)
 - Galois/Counter Mode (GCM) (upcoming)
-- XEX Tweaked Codebook (XTS-AES) (upcoming)
 
-All tests performed with Cryptography (https://github.com/pyca/cryptography/)
+--- --- --- --- --- ---
+
+All TESTS performed with Cryptography (https://github.com/pyca/cryptography/)
 
 This may be vulnerable to side channel attacks. Learn more: https://en.wikipedia.org/wiki/Advanced_Encryption_Standard#Security
 _____________________________
