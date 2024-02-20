@@ -24,7 +24,6 @@ Sticking with the no modules theme, I made my own base64 functions for you to us
 - Output Feedback (OFB)
 - Counter (CTR)
 - Galois/Counter Mode (GCM)
-- XTS-AES (Experimental/Upcoming)
 
 --- --- --- --- --- ---
 
