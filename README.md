@@ -1,4 +1,4 @@
-Here's the deal. I hate modules. They are a waste of milliseconds of your time.
+Here's the dealH I hate modules. Why import modules when you can save milliseconds of your time?
 
 I was unable to find any pure python implementations of AES that strictly follow NIST FIPS 197:
 
@@ -27,7 +27,7 @@ Sticking with the no modules theme, I made my own base64 functions for you to us
 
 --- --- --- --- --- ---
 
-All TESTS performed with Cryptography (https://github.com/pyca/cryptography/)
+All tests performed with Cryptography (https://github.com/pyca/cryptography/)
 
 This may be vulnerable to side channel attacks. Learn more: https://en.wikipedia.org/wiki/Advanced_Encryption_Standard#Security
 _____________________________
