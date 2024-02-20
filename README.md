@@ -1,4 +1,4 @@
-Here's the dealH I hate modules. Why import modules when you can save milliseconds of your time?
+Here's the deal: I hate modules. Why import modules when you can save milliseconds of your time?
 
 I was unable to find any pure python implementations of AES that strictly follow NIST FIPS 197:
 
