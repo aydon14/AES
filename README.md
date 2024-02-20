@@ -1,14 +1,14 @@
 Here's the deal. I hate modules. They are a waste of milliseconds of your time.
 
-I was unable to find any pure python implementations of AES that strictly follows NIST FIPS 197:
+I was unable to find any pure python implementations of AES that strictly follow NIST FIPS 197:
 
 https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.197-upd1.pdf
 
 So I decided to make my own. Current updates will be posted on this repository.
 
-Each file contains 128, 192, and 256 bit versions of each mode.
+128, 192, and 256 bit versions are built-in each file.
 
-These files contain bare-bone implementations of each cipher. There are no special errors, classes, built-in conversions, etc.
+There are no special errors, warnings, etc that I've implemented.
 
 Each cipher takes and returns bytes. If you want base64 or hex, check conversions.py .
 
@@ -23,7 +23,8 @@ Sticking with the no modules theme, I made my own base64 functions for you to us
 - Cipher Feedback (CFB)
 - Output Feedback (OFB)
 - Counter (CTR)
-- Galois/Counter Mode (GCM) (upcoming)
+- Galois/Counter Mode (GCM)
+- XTS-AES (Experimental/Upcoming)
 
 --- --- --- --- --- ---
 
