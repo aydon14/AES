@@ -224,3 +224,17 @@ def aes_decrypt(ciphertext, key):
 
     plaintext = unpad(plaintext)
     return plaintext
+
+def encode():
+    plaintext = b"0000000000000000"
+    key = b"0000000000000000"
+    
+    ciphertext = aes_encrypt(plaintext, key)
+    decrypted_plaintext = aes_decrypt(ciphertext, key)
+    
+    print(f"Original string: {plaintext}")
+    print(f"Encoded string: {ciphertext.hex()}")
+    print(f"Decoded string: {decrypted_plaintext}")
+    
+if __name__ == "__main__":
+    encode()
