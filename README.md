@@ -1,4 +1,4 @@
-This repository contains all ciphers I've recreated.
+This repository contains all the ciphers I've recreated.
 
 I'm trying to add more ciphers, and all updates will be posted in this repository.
 
@@ -8,7 +8,7 @@ Most tests performed with Cryptography (https://github.com/pyca/cryptography/)
 
 These are not made with security in mind. Be cautious if you plan on implementing them in your code.
 
-Below is a list of all ciphers. If it gets too long, use ctrl+f to find the one you want.
+Below is a list of all ciphers in this repository. If it gets too long, use ctrl+f to find the one you want.
 _____________________________
 --- Ciphers & Modes ---
 
