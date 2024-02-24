@@ -1,22 +1,32 @@
-Here's the deal: I hate modules. Why import modules when you can save milliseconds of your time?
+This repository contains all ciphers I've recreated.
 
-I was unable to find any pure python implementations of AES that strictly follow NIST FIPS 197:
+I'm trying to add more ciphers, and all updates will be posted in this repository.
 
-https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.197-upd1.pdf
+These ciphers are meant to be used in my encryptor, found here: https://github.com/aydon14/Python-Encryptor
+_____________________________
+Most tests performed with Cryptography (https://github.com/pyca/cryptography/)
 
-So I decided to make my own. Current updates will be posted on this repository.
+These are not made with security in mind. Be cautious if you plan on implementing them in your code.
 
-128, 192, and 256 bit versions are built-in each file.
+Below is a list of all ciphers. If it gets too long, use ctrl+f to find the one you want.
+_____________________________
+--- Ciphers & Modes ---
 
-There are no special errors, warnings, etc that I've implemented.
+-- Base-N/ascii85 --
 
-Each cipher takes and returns bytes. If you want base64 or hex, check conversions.py .
+-- Base-N/base16 --
 
-Sticking with the no modules theme, I made my own base64 functions for you to use, also in conversions.py .
+-- Base-N/base32 --
 
---- Ciphers / Modes ---
+-- Base-N/base58 --
 
--- Rijndael --
+-- Base-N/base64 --
+
+-- Base-N/base85 --
+
+-- Base-N/base91 --
+
+-- AES Comp/Rijndael --
 
 - Electronic Codebook (ECB)
 - Cipher Block Chaining (CBC)
@@ -24,12 +34,6 @@ Sticking with the no modules theme, I made my own base64 functions for you to us
 - Output Feedback (OFB)
 - Counter (CTR)
 - Galois/Counter Mode (GCM)
-
---- --- --- --- --- ---
-
-All tests performed with Cryptography (https://github.com/pyca/cryptography/)
-
-This may be vulnerable to side channel attacks. Learn more: https://en.wikipedia.org/wiki/Advanced_Encryption_Standard#Security
 _____________________________
 Made by Aydon Fauscett
 
