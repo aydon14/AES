@@ -1,3 +1,5 @@
+ARCHIVED: I am no longer updating this repository, any ciphers I recreate will be located in this repository: https://github.com/aydon14/Python-Encryptor
+
 This repository contains all the ciphers I've recreated.
 
 I'm trying to add more ciphers, and all updates will be posted in this repository.
